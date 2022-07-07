@@ -1,0 +1,14 @@
+version: "3.9"
+services:
+  mongo:
+    image: mongo:4.4.15
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: root
+    volumes:
+      - mongodb-data:/data/db
+    ports:
+      - "27017:27017"
+    restart: unless-stopped
+volumes:
+  mongodb-data:
