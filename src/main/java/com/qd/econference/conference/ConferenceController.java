@@ -56,7 +56,7 @@ public class ConferenceController {
         return conferenceStatisticsDtoMapper.mapToConferenceStatisticsDto(conferenceService.getStatistics(conferenceId));
     }
 
-    @GetMapping("/{conferenceId}/statistics")
+    @GetMapping("/{conferenceId}/participants")
     @PreAuthorize("hasAnyAuthority('ADMIN', 'MANAGER')")
     Set<UserDto> getParticipants(@PathVariable BigInteger conferenceId) {
         return conferenceService.getParticipants(conferenceId).stream().map(userDtoMapper::mapToUserDto).collect(toSet());

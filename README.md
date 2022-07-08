@@ -300,8 +300,7 @@ curl -X GET 'http://localhost:8080/api/v1/users/777/available-conferences' -H "A
 ###### Register for a conference
 
 ```console
-curl -X POST 'http://localhost:8080/api/v1/users/777/conferences' -H "Accept: application/json" \
---data-raw '{"conferenceId": 111}'
+curl -X PUT 'http://localhost:8080/api/v1/users/777/conferences/111' -H "Accept: application/json"
 ```
 
 ```json

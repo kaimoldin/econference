@@ -3,6 +3,7 @@ package com.qd.econference.conference;
 import com.qd.econference.auth.User;
 import com.qd.econference.room.Room;
 import com.qd.econference.room.RoomService;
+import com.qd.econference.users.UserService;
 import lombok.RequiredArgsConstructor;
 import org.apache.logging.log4j.util.Strings;
 import org.springframework.stereotype.Service;
@@ -20,6 +21,7 @@ import java.util.Set;
 public class ConferenceService {
     private final ConferenceRepository conferenceRepository;
     private final RoomService roomService;
+    private final UserService userService;
 
     public Conference getById(BigInteger id) {
         return conferenceRepository.findById(id).orElseThrow(() -> new NoSuchElementException("conference by id: " + id));
@@ -32,7 +34,7 @@ public class ConferenceService {
     public Conference add(AddConferenceRequest request) {
         Room room = roomService.getById(request.getRoomId());
         checkSeats(room.getSeatCount(), request.getExpectedParticipantCount());
-        return conferenceRepository.save(Conference.builder()
+        return save(Conference.builder()
                 .name(request.getName())
                 .expectedParticipantCount(request.getExpectedParticipantCount())
                 .room(room)
@@ -55,6 +57,10 @@ public class ConferenceService {
         if (request.getEnabled() != null) {
             conference.setEnabled(request.getEnabled());
         }
+        return save(conference);
+    }
+
+    public Conference save(Conference conference) {
         return conferenceRepository.save(conference);
     }
 
@@ -80,5 +86,15 @@ public class ConferenceService {
         return conferenceRepository.findById(conferenceId)
                 .orElseThrow(() -> new NoSuchElementException("conference by id: " + conferenceId))
                 .getParticipants();
+    }
+
+    public Set<Conference> getScheduledConferences(BigInteger userId) {
+        User user = userService.getById(userId);
+        return conferenceRepository.findAllByParticipantsContainingAndEnabledIsTrue(user);
+    }
+
+    public Set<Conference> getAvailableConferences(BigInteger userId) {
+        User user = userService.getById(userId);
+        return conferenceRepository.findAllByParticipantsNotContainingAndEnabledIsTrue(user);
     }
 }
