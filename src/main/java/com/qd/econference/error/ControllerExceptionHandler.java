@@ -38,4 +38,12 @@ public class ControllerExceptionHandler {
         log.info(msg);
         return ErrorDto.builder().requestId(UUID.randomUUID()).message(msg).build();
     }
+
+    @ExceptionHandler(value = IllegalStateException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ErrorDto handleIllegalStateException(IllegalStateException ex) {
+        String msg = "Execution error: " + ex.getMessage();
+        log.info(msg);
+        return ErrorDto.builder().requestId(UUID.randomUUID()).message(msg).build();
+    }
 }
