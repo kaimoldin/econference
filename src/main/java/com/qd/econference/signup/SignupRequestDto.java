@@ -3,10 +3,15 @@ package com.qd.econference.signup;
 import lombok.Builder;
 import lombok.Data;
 
+import javax.validation.constraints.NotBlank;
+
 @Data
 @Builder
-public class SignupRequest {
+public class SignupRequestDto {
+    @NotBlank
     private String name;
+    @NotBlank
     private String email;
+    @NotBlank
     private String password;
 }

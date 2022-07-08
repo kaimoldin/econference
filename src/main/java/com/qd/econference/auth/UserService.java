@@ -28,10 +28,16 @@ public class UserService implements UserDetailsService {
     }
 
     public User add(User user) {
+        if (userRepository.existsByEmail(user.getEmail())) {
+            throw new IllegalArgumentException("User already exists: " + user);
+        }
         return userRepository.save(user);
     }
 
     public User update(User user) {
+        if (!userRepository.existsByEmail(user.getEmail())) {
+            throw new IllegalArgumentException("User not found: " + user);
+        }
         return userRepository.save(user);
     }
 }

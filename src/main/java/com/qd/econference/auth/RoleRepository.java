@@ -7,4 +7,5 @@ import java.math.BigInteger;
 
 @Repository
 public interface RoleRepository extends MongoRepository<Role, BigInteger> {
+    Role findByName(String name);
 }
