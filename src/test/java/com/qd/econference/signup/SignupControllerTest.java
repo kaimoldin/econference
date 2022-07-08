@@ -16,6 +16,7 @@ class SignupControllerTest extends BaseControllerTest {
         with().body(SignupRequestDto.builder().email("test@test").name("test").password("123").build())
                 .post("/api/v1/signup")
                 .then()
+                .assertThat()
                 .statusCode(HttpStatus.SC_CREATED);
     }
 
@@ -24,6 +25,7 @@ class SignupControllerTest extends BaseControllerTest {
         with().body(SignupRequestDto.builder().name("test").password("123").build())
                 .post("/api/v1/signup")
                 .then()
+                .assertThat()
                 .statusCode(HttpStatus.SC_BAD_REQUEST);
     }
 
@@ -32,6 +34,7 @@ class SignupControllerTest extends BaseControllerTest {
         with().body(SignupRequestDto.builder().email("test@test").name("test").build())
                 .post("/api/v1/signup")
                 .then()
+                .assertThat()
                 .statusCode(HttpStatus.SC_BAD_REQUEST);
     }
 
@@ -40,6 +43,7 @@ class SignupControllerTest extends BaseControllerTest {
         with().body(SignupRequestDto.builder().email("admin@localhost").name("admin").password("123").build())
                 .post("/api/v1/signup")
                 .then()
+                .assertThat()
                 .statusCode(HttpStatus.SC_BAD_REQUEST);
     }
 }

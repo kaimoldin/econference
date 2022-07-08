@@ -7,4 +7,6 @@ import org.mapstruct.Mapper;
 @Mapper(uses = {RoleDtoMapper.class})
 public interface UserDtoMapper {
     UserDto mapToUserDto(User user);
+
+    User mapToUser(UserDto dto);
 }

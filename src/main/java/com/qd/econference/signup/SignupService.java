@@ -1,8 +1,8 @@
 package com.qd.econference.signup;
 
 import com.qd.econference.auth.User;
-import com.qd.econference.auth.UserService;
 import com.qd.econference.roles.RoleService;
+import com.qd.econference.users.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
