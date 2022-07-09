@@ -9,6 +9,7 @@ import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.math.BigInteger;
+import java.time.LocalDateTime;
 import java.util.Set;
 
 @Data
@@ -21,6 +22,8 @@ public class Conference {
     private Integer expectedParticipantCount;
     @DBRef
     private Room room;
+    private LocalDateTime startTime;
+    private LocalDateTime endTime;
     private Boolean enabled;
     @DBRef(lazy = true)
     private Set<User> participants;

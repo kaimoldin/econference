@@ -3,6 +3,7 @@ package com.qd.econference.conference;
 import lombok.Data;
 
 import java.math.BigInteger;
+import java.time.LocalDateTime;
 
 @Data
 public class UpdateConferenceRequest {
@@ -10,4 +11,6 @@ public class UpdateConferenceRequest {
     private Integer expectedParticipantCount;
     private BigInteger roomId;
     private Boolean enabled;
+    private LocalDateTime startTime;
+    private LocalDateTime endTime;
 }

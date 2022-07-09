@@ -12,6 +12,7 @@ import java.util.NoSuchElementException;
 public class RoleService {
     public static final String PARTICIPANT_ROLE_NAME = "PARTICIPANT";
     public static final String ADMIN_ROLE_NAME = "ADMIN";
+    public static final String MANAGER_ROLE_NAME = "MANAGER";
     private final RoleRepository roleRepository;
 
     public Role getParticipantRole() {
@@ -20,6 +21,10 @@ public class RoleService {
 
     public Role getAdminRole() {
         return getByName(ADMIN_ROLE_NAME);
+    }
+
+    public Role getManagerRole() {
+        return getByName(MANAGER_ROLE_NAME);
     }
 
     public Role getByName(String name) {

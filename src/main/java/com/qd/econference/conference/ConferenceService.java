@@ -13,7 +13,10 @@ import org.springframework.transaction.annotation.Transactional;
 import java.math.BigInteger;
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.Objects;
 import java.util.Set;
+
+import static java.util.stream.Collectors.toList;
 
 @Service
 @RequiredArgsConstructor
@@ -33,12 +36,13 @@ public class ConferenceService {
 
     public Conference add(AddConferenceRequest request) {
         Room room = roomService.getById(request.getRoomId());
-        checkSeats(room.getSeatCount(), request.getExpectedParticipantCount());
-        return save(Conference.builder()
+        return save(check(Conference.builder()
                 .name(request.getName())
                 .expectedParticipantCount(request.getExpectedParticipantCount())
                 .room(room)
-                .build());
+                .startTime(request.getStartTime())
+                .endTime(request.getEndTime())
+                .build()));
     }
 
     public Conference update(BigInteger conferenceId, UpdateConferenceRequest request) {
@@ -51,23 +55,40 @@ public class ConferenceService {
             conference.setRoom(roomService.getById(request.getRoomId()));
         }
         if (request.getExpectedParticipantCount() != null) {
-            checkSeats(conference.getRoom().getSeatCount(), request.getExpectedParticipantCount());
             conference.setExpectedParticipantCount(request.getExpectedParticipantCount());
+        }
+        if (request.getStartTime() != null) {
+            conference.setStartTime(request.getStartTime());
+        }
+        if (request.getEndTime() != null) {
+            conference.setEndTime(request.getEndTime());
         }
         if (request.getEnabled() != null) {
             conference.setEnabled(request.getEnabled());
         }
-        return save(conference);
+        return save(check(conference));
     }
 
     public Conference save(Conference conference) {
         return conferenceRepository.save(conference);
     }
 
-    private void checkSeats(Integer seatCount, Integer expectedParticipantCount) {
-        if (seatCount.compareTo(expectedParticipantCount) < 0) {
+    protected Conference check(Conference conference) {
+        if (conference.getRoom().getSeatCount().compareTo(conference.getExpectedParticipantCount()) < 0) {
             throw new IllegalStateException("requested more seats than actually available");
         }
+        if (!conference.getStartTime().isBefore(conference.getEndTime())) {
+            throw new IllegalStateException("incorrect time period");
+        }
+        List<Conference> conferencesInPeriod = conferenceRepository.findConferences(
+                        conference.getRoom().getId(), conference.getStartTime(), conference.getEndTime())
+                .stream()
+                .filter(c -> !Objects.equals(c.getId(), conference.getId()))
+                .toList();
+        if (!conferencesInPeriod.isEmpty()) {
+            throw new IllegalStateException("another conference in the same period: " + conferencesInPeriod.get(0));
+        }
+        return conference;
     }
 
     @Transactional(isolation = Isolation.SERIALIZABLE)

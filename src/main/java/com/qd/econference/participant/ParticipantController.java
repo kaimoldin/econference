@@ -6,6 +6,7 @@ import com.qd.econference.conference.ConferenceRequestDtoMapper;
 import com.qd.econference.conference.ConferenceStatisticsDtoMapper;
 import com.qd.econference.users.UserDtoMapper;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -44,6 +45,7 @@ public class ParticipantController {
     }
 
     @DeleteMapping("/conferences/{conferenceId}")
+    @PreAuthorize("@securityCheckService.canCancelRegistration(#userId, principal)")
     ConferenceDto cancelRegistration(@PathVariable BigInteger userId, @PathVariable BigInteger conferenceId) {
         return conferenceDtoMapper.mapToConferenceDto(participantService.cancelRegistration(userId, conferenceId));
     }
