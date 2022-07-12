@@ -1,9 +1,9 @@
 package com.qd.econference;
 
-import com.qd.econference.auth.RoleRepository;
-import com.qd.econference.auth.UserRepository;
-import com.qd.econference.conference.ConferenceRepository;
-import com.qd.econference.room.RoomRepository;
+import com.qd.econference.repositories.ConferenceRepository;
+import com.qd.econference.repositories.RoleRepository;
+import com.qd.econference.repositories.RoomRepository;
+import com.qd.econference.repositories.UserRepository;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

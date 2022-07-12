@@ -1,6 +1,6 @@
 package com.qd.econference;
 
-import com.qd.econference.auth.UserAuthService;
+import com.qd.econference.services.UserAuthService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
